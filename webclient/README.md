@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# Backend Instructions
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This README file contains instructions for setting up and starting the web client for the Home Project Manager app.
+
+The web client is a React app that uses Apollo Client to communicate with the GraphQL API, and was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Setup
+
+1. Install dependencies by running `yarn install`.
+2. Copy the `.env.example` file to a new file named `.env` in the root directory and update the `REACT_APP_GRAPHQL_API_URL` value with the appropriate GraphQL API URL.
 
 ## Available Scripts
 

@@ -3,3 +3,6 @@ node_modules
 
 # IDE config
 .idea/
+
+# misc
+.DS_Store
