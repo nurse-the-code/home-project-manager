@@ -1,4 +1,4 @@
-# Backend Instructions
+# Web Client Instructions
 
 This README file contains instructions for setting up and starting the web client for the Home Project Manager app.
 
