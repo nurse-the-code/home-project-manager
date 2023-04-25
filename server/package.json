@@ -7,13 +7,12 @@
   "scripts": {
     "compile": "tsc",
     "start": "yarn compile && node ./dist/index.js",
-    "db:setup": "yarn compile && node ./dist/setupDatabase.js",
-    "db:reset": "yarn compile && node ./dist/setupDatabase.js --reset"
+    "db:setup": "yarn compile && node ./dist/util/database/setup.js",
+    "db:reset": "yarn compile && node ./dist/util/database/setup.js --reset"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
     "@types/pg": "^8.6.6",
-    "@types/pg-promise": "^5.4.3",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
