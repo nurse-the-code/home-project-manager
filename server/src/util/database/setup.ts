@@ -57,7 +57,7 @@ const main = async () => {
   }
 
   try {
-    // Create a new database
+    // Create a new database with the public schema
     await adminClient.query(
       `CREATE DATABASE ${process.env.DB_NAME} WITH OWNER ${process.env.DB_USER}`
     );
@@ -70,35 +70,6 @@ const main = async () => {
 
   await adminClient.end();
   console.log("Disconnected from Postgres as superuser");
-
-  // Connect to the new database using a new client
-  const newDBClient = new Client({
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-  });
-
-  await newDBClient.connect();
-  console.log("Connected to Postgres as new user to create schema");
-
-  try {
-    // Create a new schema
-    await newDBClient.query(
-      `CREATE SCHEMA IF NOT EXISTS ${process.env.SCHEMA_NAME} AUTHORIZATION ${process.env.DB_USER}`
-    );
-
-    console.log(`Created schema ${process.env.SCHEMA_NAME}`);
-  } catch (error) {
-    console.error("Error creating schema:", error);
-    process.exit(1);
-  }
-
-  await newDBClient.end();
-  console.log(
-    "Disconnected from Postgres as new user since schema is now created"
-  );
 
   await createTables();
 };
