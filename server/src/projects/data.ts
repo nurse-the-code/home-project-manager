@@ -1,6 +1,4 @@
-import db from "../util/database/db.js";
-import withTransaction from "../util/database/transaction.js";
-import { ITask } from "pg-promise";
+import Database from "../util/database/db.js";
 
 export interface Project {
   name: string;
@@ -8,13 +6,17 @@ export interface Project {
   dueDate?: Date;
 }
 
-export async function saveProject(project: Project): Promise<Project> {
+export async function saveProject(
+  db: Database,
+  project: Project
+): Promise<Project> {
   const { name, description, dueDate } = project;
 
-  return await db.task(async (tx: ITask<unknown>) => {
-    return await tx.one(
+  return await db.transaction(async (client) => {
+    const result = await client.query(
       "INSERT INTO projects(name, description, due_date) VALUES($1, $2, $3) RETURNING *",
       [name, description, dueDate || null]
     );
+    return result.rows[0];
   });
 }

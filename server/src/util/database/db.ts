@@ -1,5 +1,6 @@
 import { config } from "dotenv";
-import pgPromise, { IMain } from "pg-promise";
+import pg, { PoolClient } from "pg";
+const { Pool } = pg;
 
 config();
 
@@ -12,8 +13,42 @@ const database = process.env.DB_NAME;
 const localConnectionString = `postgres://${user}:${password}@${host}:${port}/${database}`;
 const connectionString = process.env.DATABASE_URL || localConnectionString;
 
-const pgp: IMain = pgPromise({});
+const pool = new Pool({
+  connectionString: connectionString,
+});
 
-const db = pgp(connectionString);
+class Database {
+  async query(text: string, params?: any[]) {
+    const client = await pool.connect();
+    try {
+      return client.query(text, params);
+    } finally {
+      client.release();
+    }
+  }
 
-export default db;
+  async transaction(fn: (client: PoolClient) => Promise<any>) {
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const result = await fn(client);
+      await client.query("COMMIT");
+      return result;
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    } finally {
+      client.release();
+    }
+  }
+
+  async getClient() {
+    return await pool.connect();
+  }
+
+  async end() {
+    await pool.end();
+  }
+}
+
+export default Database;

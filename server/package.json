@@ -21,8 +21,6 @@
     "@apollo/server": "^4.6.0",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
-    "pg": "^8.10.0",
-    "pg-connection-string": "^2.5.0",
-    "pg-promise": "^11.4.3"
+    "pg": "^8.10.0"
   }
 }

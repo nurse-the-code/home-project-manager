@@ -1,6 +1,7 @@
 import { config } from "dotenv";
 import pg from "pg";
 import createTables from "./createTables.js";
+import Database from "./db.js";
 
 config();
 
@@ -71,7 +72,18 @@ const main = async () => {
   await adminClient.end();
   console.log("Disconnected from Postgres as superuser");
 
-  await createTables();
+  const db = new Database();
+
+  createTables(db)
+    .then(() => {
+      console.log("Tables created successfully");
+    })
+    .catch((error) => {
+      console.error("Error creating tables:", error);
+    })
+    .finally(() => {
+      db.end();
+    });
 };
 
 main().catch((error) => {
