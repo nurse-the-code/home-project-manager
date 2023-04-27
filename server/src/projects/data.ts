@@ -1,4 +1,5 @@
 import Database from "../util/database/db.js";
+import { db as defaultDatabase } from "../index.js";
 
 export interface Project {
   name: string;
@@ -7,8 +8,8 @@ export interface Project {
 }
 
 export async function saveProject(
-  db: Database,
-  project: Project
+  project: Project,
+  db: Database = defaultDatabase
 ): Promise<Project> {
   const { name, description, dueDate } = project;
 
