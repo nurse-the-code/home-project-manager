@@ -12,6 +12,15 @@ async function main() {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    formatError: (error) => {
+      // Log the full error details on the server for debugging
+      console.error(error);
+
+      // Customize the error message for clients
+      return process.env.NODE_ENV === "production"
+        ? new Error("An error occurred")
+        : error;
+    },
   });
 
   // Passing an ApolloServer instance to the `startStandaloneServer` function:
